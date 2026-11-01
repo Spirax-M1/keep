@@ -1,0 +1,26 @@
+name: Site24x7 tag parser
+on:
+  push:
+    paths:
+      - keep/providers/site24x7_provider/**
+      - tests/providers/site24x7_provider/**
+      - .github/workflows/site24x7-parser.yml
+  pull_request:
+    paths:
+      - keep/providers/site24x7_provider/**
+      - tests/providers/site24x7_provider/**
+      - .github/workflows/site24x7-parser.yml
+permissions:
+  contents: read
+jobs:
+  parser:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.11', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m unittest discover -s tests/providers/site24x7_provider -p test_tag_parser.py -v
