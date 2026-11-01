@@ -6,7 +6,7 @@ This follow-up uses `maintenance/site24x7-input-validation`, based on that contr
 
 ## Findings and change
 
-The existing formatter stored dictionary tags by reference and emitted an empty label name for inputs such as `:value`. Tag parsing now lives in a dependency-free helper, copies dictionary inputs and ignores empty keys. Valid existing key/value and bare tags retain their behavior, including first-colon splitting and last-value-wins duplicate names. The mapping copy is shallow; nested values are not modified or deep-copied.
+The existing formatter passed dictionary tags directly to AlertDto and emitted an empty label name for inputs such as `:value`. Tag parsing now lives in a dependency-free helper, copies dictionary inputs and ignores empty keys. Valid existing key/value and bare tags retain their behavior, including first-colon splitting and last-value-wins duplicate names. The mapping copy is shallow; nested values are not modified or deep-copied.
 
 Ten focused unittest cases cover these behaviors. Run:
 
@@ -18,6 +18,6 @@ The added workflow checks Python 3.11–3.13. These checks validate parsing only
 
 ## Full integration checks still needed
 
-The upstream PR showed title, issue-link and security checks, but no completed provider unit-test run was visible. Existing 16 provider tests require the full Keep environment. This PC has Python 3.14, outside the supported >=3.11,<3.14 range, and lacks pytest and several service dependencies. Do not claim those 16 tests have passed in this review.
+The upstream PR showed title, issue-link and security checks, but no completed provider unit-test run was visible. The original 16 provider tests, plus two new formatter-level edge cases in this revision, require the full Keep environment. This PC has Python 3.14, outside the supported >=3.11,<3.14 range, and lacks pytest and several service dependencies. Do not claim those 18 formatter tests have passed in this review. No Actions run was visible for the new parser workflow immediately after the fork branch push; verify workflow availability in the fork before assuming CI coverage.
 
 In a compatible development environment, install the locked project dependencies and run the existing provider tests. Confirm real webhook payload examples and check mapping/status behavior with AlertDto before proposing the follow-up upstream. The main branch belongs to the upstream application; it has not been rewritten as an original portfolio project.
